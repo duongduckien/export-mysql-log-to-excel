@@ -1,0 +1,9 @@
+# Module
+include/
+
+# File
+ftp.php
+index.php
+
+# Another
+.idea/
