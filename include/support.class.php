@@ -109,6 +109,48 @@ class SupportArray extends Support {
         };
     }
 
+    function findDuplicatedByValue($arr, $name) {
+
+        $arrNew = array_column($arr, $name);
+
+        $arrKeyDuplicated = array();
+        $arrValueDuplicated = array();
+
+        foreach ($arr as $key => $value) {
+
+            $arrCheck = [];
+
+            foreach ($arrNew as $k => $v) {
+
+                if ($v == $value[$name]) {
+                    array_push($arrCheck, true);
+                }
+
+            }
+
+            if (count($arrCheck) > 1) {
+
+                if (!in_array($key, $arrKeyDuplicated) && !in_array($value[$name], $arrValueDuplicated)) {
+                    array_push($arrKeyDuplicated, $key);
+                    array_push($arrValueDuplicated, $value[$name]);
+                }
+                
+            }
+
+        }
+
+        $arrDataDuplicated = array();
+
+        foreach ($arrKeyDuplicated as $item) {
+
+            array_push($arrDataDuplicated, $arr[$item]);
+
+        }
+
+        return $arrDataDuplicated;
+
+    }
+
 }
 
 // Support print to easy see

@@ -3,8 +3,21 @@
 require 'include/php-export-data.class.php';
 require 'include/support.class.php';
 
-$pathOfLogFile = '/Users/apple/Desktop/';
-$nameOfLogFile = 'a_cuong_log.txt';
+$mode = '';
+
+if ($_REQUEST) {
+
+    if ($_REQUEST['mode']) $mode = $_REQUEST['mode'];
+
+}
+
+$pathOfLogFile = '/Users/apple/Desktop/query_logs/';
+// $nameOfLogFile = 'create_so_final_cash.txt';
+// $nameOfLogFile = 'create_so_final_charge.txt';
+// $nameOfLogFile = 'create_so_final_check.txt';
+// $nameOfLogFile = 'create_so_final_credit.txt';
+// $nameOfLogFile = 'open_existing_so.txt';
+$nameOfLogFile = 'save_as_pending_so.txt';
 
 $arrExceptionQuery = [
     'SET NAMES utf8',
@@ -66,6 +79,20 @@ foreach ($arrFromQueryTime as $key => $value) {
 
 $arrNew = $supportArr->sortBy($arrToExcelFile, 'query');
 
+// Create excel file
+$nameOfExcelFile = $nameFile . '.xls';
+
+if ($mode != '') {
+
+    if ($mode == 'filter_duplicate') {
+
+        $arrNew = $supportArr->findDuplicatedByValue($arrNew, 'query');
+        $nameOfExcelFile = $nameFile . '_filter_duplicate.xls';
+
+    }
+
+}
+
 $arrTitle = [
     'No',
     'Query',
@@ -80,9 +107,6 @@ $arrTitle = [
     'New Time',
     'Note'
 ];
-
-// Create excel file
-$nameOfExcelFile = $nameFile . '.xls';
 
 $exporter = new ExportDataExcel('browser', $nameOfExcelFile);
 
